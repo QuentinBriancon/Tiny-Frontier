@@ -10,6 +10,7 @@ out/
 *.dylib
 *.exe
 
+game
 # ---- CMake / Make ----
 CMakeCache.txt
 CMakeFiles/
