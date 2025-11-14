@@ -1,0 +1,81 @@
+# Tiny Frontier
+
+Tiny Frontier est un petit Vampire Survivors-like développé en **C / SDL2** avec un **ECS maison**.  
+Le joueur, miniaturisé dans un monde d’insectes, doit survivre **20 minutes** en affrontant des vagues d’ennemis, deux mini-boss et un boss final.
+
+---
+
+## Fonctionnement du jeu
+
+- Gameplay basé sur des vagues d’ennemis de plus en plus forts.
+- Progression : **T1 → T2 → T3 → Mini-boss → Boss final**.
+- Combat automatique ou semi-automatique selon les armes.
+- Améliorations via XP et level-up (à implémenter).
+
+---
+
+## Ennemis (Biome Grassland)
+
+**T1**
+- Aphidling : lent, rush direct  
+- Mite : rapide, zigzag
+
+**T2**
+- Leafhopper : dash  
+- Mini-Beetle : tank lent
+
+**T3**
+- Ant Scout : rapide, trajectoire courbe  
+- Horned Beetle : très tank, charges
+
+**Mini-boss**
+- Shield Beetle (10:00) : face avant invulnérable  
+- Queen Ant (15:00) : spawn de fourmis + AoE
+
+**Boss final**
+- Grass Colossus (20:00) : dash, AoE, spawn
+
+---
+
+## Architecture
+
+- **SDL2** pour le rendu simple (rectangles, couleurs).
+- **ECS (Structure of Arrays)** :
+  - Position  
+  - Velocity  
+  - Health  
+  - Damage  
+  - Lifetime  
+  - EnemyType  
+  - Tags (Player/Enemy/Projectile)  
+
+- Systèmes :
+  - mouvement  
+  - IA ennemie  
+  - projectiles  
+  - collisions
+
+---
+
+## Armes
+
+- Thorn Shot (actuel) : tir vers la souris  
+- Armes prévues : Seed Cannon, Burrow Spike, Root Nova, Bee Drone  
+- Upgrades prévues : dégâts, projectiles, cadence, pierce, poison…
+
+---
+
+## To-Do rapide
+
+- Mini-Boss 1 (Shield Beetle)  
+- Système d’XP + level-up  
+- Upgrades d’armes  
+- Mini-Boss 2  
+- Boss final  
+- Optimisations (pooling, spatial hashing)
+
+---
+
+## Résumé
+
+Tiny Frontier cherche à créer un Survivors-like simple, lisible et efficace dans un univers d’insectes, avec un ECS propre et un gameplay structuré sur 20 minutes.
