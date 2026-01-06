@@ -7,5 +7,7 @@
 void system_movement(float dt);
 void system_projectiles(float dt);
 void system_collisions(void);
+void system_enemy_player_contact(float dt);
+
 
 #endif // CORE_SYSTEMS_H

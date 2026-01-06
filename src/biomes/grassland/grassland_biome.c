@@ -4,6 +4,7 @@
 #include "biomes/grassland/grassland_biome.h"
 #include "biomes/grassland/grassland_enemies.h"
 #include "biomes/grassland/grassland_spawn.h"
+#include "biomes/grassland/grassland_bosses.h"
 #include "biomes/grassland/grassland_ai.h"
 #include "core/ecs.h"
 
@@ -12,11 +13,14 @@
 
 static void grassland_init(void) {
     grassland_spawn_init();
+    grassland_spawn_set_mode(GRASSLAND_SPAWN_MODE_NORMAL);
+    grassland_bosses_init();
 }
 
 static void grassland_update(float dt, float run_time, Entity player) {
     grassland_spawn_update(dt, run_time, player);
     grassland_enemy_ai(dt, player);
+    grassland_bosses_update(dt, run_time, player);
 }
 
 static void grassland_shutdown(void) {

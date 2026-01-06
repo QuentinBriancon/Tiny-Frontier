@@ -7,6 +7,7 @@ typedef struct {
     EnemyType type;
     int base_hp;
     float base_speed;
+    int   base_dmg;
 } EnemyArchetype;
 
 // table globale d'archétypes

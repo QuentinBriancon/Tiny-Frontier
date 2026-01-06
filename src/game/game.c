@@ -43,6 +43,7 @@ void game_init(Engine *engine) {
     ecs_add_position(player, start_x, start_y);
     ecs_add_velocity(player, 0.0f, 0.0f);
     ecs_add_player_tag(player);
+    ecs_add_health(player, 100);
 
     engine->camera_x = start_x + player_w / 2.0f;
     engine->camera_y = start_y + player_h / 2.0f;
@@ -96,6 +97,8 @@ void game_update(Engine *engine, float dt) {
     system_projectiles(dt);
     system_collisions();
     system_movement(dt);
+    system_enemy_player_contact(dt);
+
 
     // Caméra
     if (ecs_has_components(player, COMP_POSITION)) {
@@ -132,6 +135,28 @@ void game_render(Engine *engine) {
         if (isPlayer) {
             w = player_w; h = player_h;
             c = (SDL_Color){0,0,255,255};
+            // --- HP bar au-dessus du joueur ---
+            if (ecs_has_components(e, COMP_HEALTH)) {
+                float pct = 0.0f;
+                if (g_health[e].max_hp > 0) {
+                    pct = (float)g_health[e].hp / (float)g_health[e].max_hp;
+                    if (pct < 0.0f) pct = 0.0f;
+                    if (pct > 1.0f) pct = 1.0f;
+                }
+
+                float bar_w = w;
+                float bar_h = 6.0f;
+
+                // p->x / p->y = top-left du joueur (si render_fill_rect_world est top-left)
+                float bar_x = p->x;
+                float bar_y = p->y - 10.0f - bar_h;
+
+                // fond
+                render_fill_rect_world(engine, bar_x, bar_y, bar_w, bar_h, (SDL_Color){30,30,30,255});
+                // fill (part de la gauche)
+                render_fill_rect_world(engine, bar_x, bar_y, bar_w * pct, bar_h, (SDL_Color){0,220,0,255});
+            }
+
         } else if (isProj) {
             w = 8.0f; h = 8.0f;
             c = (SDL_Color){255,255,0,255};
@@ -149,6 +174,7 @@ void game_render(Engine *engine) {
                 case ENEMY_TYPE_MINI_BEETLE:   c = (SDL_Color){150,75,0,255}; break;
                 case ENEMY_TYPE_ANT_SCOUT:     c = (SDL_Color){0,200,200,255}; break;
                 case ENEMY_TYPE_HORNED_BEETLE: c = (SDL_Color){180,0,80,255}; break;
+                case ENEMY_TYPE_BOSS_SHIELD_BEETLE: c = (SDL_Color){180,0,80,255}; break;
                 default:                       c = (SDL_Color){255,0,255,255}; break;
             }
         }

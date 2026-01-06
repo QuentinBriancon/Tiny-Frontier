@@ -8,6 +8,7 @@
 
 typedef uint32_t Entity;
 typedef uint32_t ComponentMask;
+#define INVALID_ENTITY ((Entity)UINT32_MAX)
 
 // Bits de composants / tags
 #define COMP_POSITION    (1u << 0)
@@ -28,7 +29,10 @@ typedef enum {
     ENEMY_TYPE_LEAFHOPPER     = 3,
     ENEMY_TYPE_MINI_BEETLE    = 4,
     ENEMY_TYPE_ANT_SCOUT      = 5,
-    ENEMY_TYPE_HORNED_BEETLE  = 6
+    ENEMY_TYPE_HORNED_BEETLE  = 6,
+
+    // Bosses
+    ENEMY_TYPE_BOSS_SHIELD_BEETLE = 1000  // boss avec un ID plus élevé
 } EnemyType;
 
 typedef struct {

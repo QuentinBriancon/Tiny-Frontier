@@ -35,12 +35,19 @@ Entity ecs_create_entity(void) {
         if (!g_entities[e].alive) {
             g_entities[e].alive = true;
             g_entities[e].mask  = 0;
+
+            // ✅ resets importants pour éviter les "mobs roses"
+            g_enemy_types[e] = ENEMY_TYPE_NONE;
+            g_enemy_timers[e] = 0.0f;
+            g_health[e].hp = 0;
+            g_health[e].max_hp = 0;
+
             return e;
         }
     }
-    // plus de place : pour l'instant on renvoie 0
-    return (Entity)0;
+    return INVALID_ENTITY;
 }
+
 
 void ecs_destroy_entity(Entity e) {
     if (e >= MAX_ENTITIES) return;

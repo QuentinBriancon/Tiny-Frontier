@@ -5,12 +5,12 @@
 #include "core/ecs.h"
 
 EnemyArchetype g_enemy_archetypes[] = {
-    { ENEMY_TYPE_APHIDLING,     1, 80.0f  },
-    { ENEMY_TYPE_MITE,          1, 140.0f },
-    { ENEMY_TYPE_LEAFHOPPER,    2, 110.0f },
-    { ENEMY_TYPE_MINI_BEETLE,   4, 60.0f  },
-    { ENEMY_TYPE_ANT_SCOUT,     2, 160.0f }, 
-    { ENEMY_TYPE_HORNED_BEETLE, 6, 70.0f  }, 
+    { ENEMY_TYPE_APHIDLING,     1,  80.0f,  4  },
+    { ENEMY_TYPE_MITE,          1, 140.0f,  6  },
+    { ENEMY_TYPE_LEAFHOPPER,    2, 110.0f,  8  },
+    { ENEMY_TYPE_MINI_BEETLE,   4,  60.0f, 10  },
+    { ENEMY_TYPE_ANT_SCOUT,     2, 160.0f,  7  },
+    { ENEMY_TYPE_HORNED_BEETLE, 6,  70.0f, 12  },
 };
 
 
@@ -30,6 +30,7 @@ void grassland_spawn_enemy_around_player(EnemyType type, Position *playerPos) {
     if (!arch) return;
 
     Entity e = ecs_create_entity();
+    if (e == INVALID_ENTITY) return;
 
     float radius = 600.0f;
     float angle = (float)rand() / (float)RAND_MAX * 2.0f * 3.1415926f;
@@ -41,6 +42,7 @@ void grassland_spawn_enemy_around_player(EnemyType type, Position *playerPos) {
     ecs_add_velocity(e, 0.0f, 0.0f);
     ecs_add_enemy_tag(e);
     ecs_add_health(e, arch->base_hp);
+    ecs_add_damage(e, arch->base_dmg);
     ecs_set_enemy_type(e, type);
 
     // la vitesse de base sera utilisée dans l'IA plus tard (avec arch->base_speed)
