@@ -1,10 +1,10 @@
-#include "engine.h"
+#include "core/engine.h"
 #include <stdio.h>
 
-int engine_init(Engine *engine, const char *title, int width, int height) {
+bool engine_init(Engine *engine, const char *title, int width, int height) {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0) {
         fprintf(stderr, "SDL_Init error: %s\n", SDL_GetError());
-        return 0;
+        return false;
     }
 
     engine->window = SDL_CreateWindow(
@@ -16,7 +16,7 @@ int engine_init(Engine *engine, const char *title, int width, int height) {
     if (!engine->window) {
         fprintf(stderr, "SDL_CreateWindow error: %s\n", SDL_GetError());
         SDL_Quit();
-        return 0;
+        return false;
     }
 
     engine->renderer = SDL_CreateRenderer(engine->window, -1, SDL_RENDERER_ACCELERATED);
@@ -24,20 +24,20 @@ int engine_init(Engine *engine, const char *title, int width, int height) {
         fprintf(stderr, "SDL_CreateRenderer error: %s\n", SDL_GetError());
         SDL_DestroyWindow(engine->window);
         SDL_Quit();
-        return 0;
+        return false;
     }
 
     if (TTF_Init() != 0) {
         fprintf(stderr, "TTF_Init error: %s\n", TTF_GetError());
+        SDL_DestroyRenderer(engine->renderer);
+        SDL_DestroyWindow(engine->window);
         SDL_Quit();
-        return 0;
+        return false;
     }
 
-    engine->width  = width;
-    engine->height = height;
-    engine->running = 1;
-
-    // INIT CAMERA
+    engine->width    = width;
+    engine->height   = height;
+    engine->running  = true;
     engine->camera_x = 0.0f;
     engine->camera_y = 0.0f;
 
@@ -48,27 +48,26 @@ int engine_init(Engine *engine, const char *title, int width, int height) {
         SDL_DestroyWindow(engine->window);
         TTF_Quit();
         SDL_Quit();
-        return 0;
+        return false;
     }
 
-    return 1;
+    return true;
 }
 
 void engine_handle_events(Engine *engine) {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_QUIT) {
-            engine->running = 0;
+            engine->running = false;
         } else if (e.type == SDL_KEYDOWN) {
             if (e.key.keysym.sym == SDLK_ESCAPE) {
-                engine->running = 0;
+                engine->running = false;
             }
         }
     }
 }
 
 void engine_begin_render(Engine *engine) {
-    // fond noir
     SDL_SetRenderDrawColor(engine->renderer, 0, 0, 0, 255);
     SDL_RenderClear(engine->renderer);
 }
@@ -85,9 +84,12 @@ void engine_shutdown(Engine *engine) {
 
     if (engine->renderer) {
         SDL_DestroyRenderer(engine->renderer);
+        engine->renderer = NULL;
     }
+
     if (engine->window) {
         SDL_DestroyWindow(engine->window);
+        engine->window = NULL;
     }
 
     TTF_Quit();

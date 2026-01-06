@@ -1,4 +1,4 @@
-#include "weapon.h"
+#include "game/weapon.h"
 #include <math.h>
 #include <SDL2/SDL.h>
 

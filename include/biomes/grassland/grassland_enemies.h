@@ -1,7 +1,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "ecs.h"  // pour EnemyType et Position
+#include "core/ecs.h"  // pour EnemyType et Position
 
 typedef struct {
     EnemyType type;
@@ -13,9 +13,9 @@ typedef struct {
 extern EnemyArchetype g_enemy_archetypes[];
 
 // retourne l'archétype correspondant au type
-const EnemyArchetype* get_enemy_archetype(EnemyType type);
+const EnemyArchetype* grassland_get_enemy_archetype(EnemyType type);
 
 // spawn basique autour du joueur
-void spawn_enemy_around_player(EnemyType type, Position *playerPos);
+void grassland_spawn_enemy_around_player(EnemyType type, Position *playerPos);
 
 #endif // ENEMY_H

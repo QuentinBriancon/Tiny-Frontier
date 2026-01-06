@@ -2,8 +2,8 @@
 #define WEAPON_H
 
 #include <stdint.h>
-#include "ecs.h"
-#include "engine.h"
+#include "core/ecs.h"
+#include "core/engine.h"
 
 // Types d'armes possibles
 typedef enum {

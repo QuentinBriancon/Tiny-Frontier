@@ -1,8 +1,8 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "enemy.h"
-#include "ecs.h"
+#include "biomes/grassland/grassland_enemies.h"
+#include "core/ecs.h"
 
 EnemyArchetype g_enemy_archetypes[] = {
     { ENEMY_TYPE_APHIDLING,     1, 80.0f  },
@@ -15,7 +15,7 @@ EnemyArchetype g_enemy_archetypes[] = {
 
 
 
-const EnemyArchetype* get_enemy_archetype(EnemyType type) {
+const EnemyArchetype* grassland_get_enemy_archetype(EnemyType type) {
     size_t count = sizeof(g_enemy_archetypes) / sizeof(g_enemy_archetypes[0]);
     for (size_t i = 0; i < count; ++i) {
         if (g_enemy_archetypes[i].type == type) {
@@ -25,8 +25,8 @@ const EnemyArchetype* get_enemy_archetype(EnemyType type) {
     return NULL;
 }
 
-void spawn_enemy_around_player(EnemyType type, Position *playerPos) {
-    const EnemyArchetype *arch = get_enemy_archetype(type);
+void grassland_spawn_enemy_around_player(EnemyType type, Position *playerPos) {
+    const EnemyArchetype *arch = grassland_get_enemy_archetype(type);
     if (!arch) return;
 
     Entity e = ecs_create_entity();
